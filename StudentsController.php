@@ -27,7 +27,7 @@ class StudentsController extends AppController
     {
         $rightNow = new FrozenTime();
 
-        // Check access and redirect - borrowed/stolen from Chris Burch
+        // Check access and redirect 
         if (!$this->CheckAccess->accessCheck('App.Students',$studentID)) {
             $this->Flash->error('Unauthorized');
             return $this->redirect([
@@ -38,7 +38,7 @@ class StudentsController extends AppController
 
         
         try {
-            // get student information //// Check to see if this is redundant from UserController code
+            // get student information 
             $student = $this->Students->get($studentID);
             
             //set student information for view
@@ -66,7 +66,7 @@ class StudentsController extends AppController
         $this->set('studentCourses', $studentCourses);
 
         //////////////////////
-        /// Should I split the above form building apart from the below request getting/handling??
+        /// End form building / Start request handling
         ///////////////////////
 
         // declare arrays to hold unique error messages and confirmations
@@ -81,13 +81,13 @@ class StudentsController extends AppController
         ) {
             $postedData = $this->getRequest()->getData();
 
-            // loop through the Answers array - thanks for this code CB!
+            // loop through the Answers array 
             foreach ($postedData['Answers'] as $id => $data) {
 
-                // get the course as entity for updating - do I need this in a try/catch block????????
+                // get the course as entity for updating 
                 $course = $this->StudentCourses->get($id);
 
-                //$data['receiveCredit'] = null; // for testing
+               
                 // if receiveCredit is not answered - add error message to array
                 if (!isset($data['receiveCredit'])) {
 
@@ -100,7 +100,6 @@ class StudentsController extends AppController
                     $data['semesterGrade'] = '0';
                 }
                
-                //$data['semesterGrade'] = null; //for testing
                 // if receiveCredit is 'Yes' but semesterGrade is empty - add error message to array
                 if (
                     ($data['receiveCredit'] == '1')
@@ -183,7 +182,7 @@ class StudentsController extends AppController
                 }
 
                 if (!empty($emailTo)) {
-                    $email = new Mailer('enrollment');  //should this be something else besides 'enrollment'??
+                    $email = new Mailer('enrollment');  
                     $email->setTo($emailTo);
                     $emailSubject = __('MMSD High School Credit Form');
                     if (filter_var(env('DEBUG', true), FILTER_VALIDATE_BOOLEAN)) {
